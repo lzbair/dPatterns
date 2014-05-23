@@ -1,30 +1,32 @@
 package io.patterns.state;
 
-import io.patterns.state.TCPConnection.TCPConnectionState;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 public class TCPConnectionTest {
 
-    @Test
-    public void testIfTCPConnectionIsEstablished() {
-        final TCPConnection connection = new TCPConnection(TCPConnectionState.ESTABLISHED);
-        final TCPResponce responce = connection.reply(new TCPRequest("Hello"));
-        Assert.assertEquals(TCPConnection.OK, responce.toString());
-    }
+	@Test
+	public void testConnectionSuccess() {
+		final TCPConnection tcp = new TCPConnection();
+		tcp.connect();
+		tcp.disconnect();
+		Assert.assertEquals(TCPConnection.ON, tcp.connect());
+		Assert.assertEquals(TCPConnection.OFF, tcp.disconnect());
+	}
 
-    @Test
-    public void testIfTCPConnectionIsDown() {
-        final TCPConnection connection = new TCPConnection(TCPConnectionState.CLOSED);
-        final TCPResponce responce = connection.reply(new TCPRequest("Hello"));
-        Assert.assertEquals(TCPConnection.UNAVAILABLE, responce.toString());
-    }
+	@Test(expected = UnsupportedOperationException.class)
+	public void testConnectionFailure() {
+		final TCPConnection tcp = new TCPConnection();
+		tcp.connect();
+		tcp.connect();
+	}
+	
+	@Test(expected = UnsupportedOperationException.class)
+	public void testDisconnectionFailure() {
+		final TCPConnection tcp = new TCPConnection();
+		tcp.connect();
+		tcp.disconnect();
+		tcp.disconnect();
+	}
 
-    @Test
-    public void testIfTCPConnection() {
-        final TCPConnection connection = new TCPConnection(TCPConnectionState.CLOSED);
-        final TCPResponce responce = connection.reply(new TCPRequest("Hello"));
-        Assert.assertEquals(TCPConnection.UNAVAILABLE, responce.toString());
-    }
 }

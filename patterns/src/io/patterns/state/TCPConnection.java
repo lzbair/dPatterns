@@ -2,25 +2,22 @@ package io.patterns.state;
 
 public final class TCPConnection {
 
-    public static final String OK = "OK";
-    public static final String UNAVAILABLE = "UNAVAILABLE";
-    private TCPConnectionState state;
+	public static final String ON = "ON";
+	public static final String OFF = "OFF";
+	private  TCPState state;
 
-    public TCPConnection(TCPConnectionState state) {
-        this.state = state;
-    }
+	public TCPConnection() {
+		this.state = new TCPListen();
+	}
 
-    public enum TCPConnectionState {
-        ESTABLISHED, CLOSED;
-    }
+	public String connect() {
+		this.state  = state.open();
+		return ON;
+	}
 
-    public TCPResponce reply(TCPRequest request) {
-        switch (state) {
-        case CLOSED:
-            return new TCPResponce(TCPConnection.UNAVAILABLE);
+	public String disconnect() {
+		this.state  = state.close();
+		return OFF;
+	}
 
-        default:
-            return new TCPResponce(TCPConnection.OK);
-        }
-    }
 }
