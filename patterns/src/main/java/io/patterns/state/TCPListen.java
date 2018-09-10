@@ -1,10 +1,10 @@
 package io.patterns.state;
 
-public class TCPListen extends TCPState {
+public class TCPListen implements TCPState {
 
 	@Override
 	public TCPState close() {
-		throw  new UnsupportedOperationException();
+		throw  new IllegalStateException("The connection is not opened yet");
 
 	}
 

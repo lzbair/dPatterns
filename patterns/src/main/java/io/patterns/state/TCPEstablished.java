@@ -1,6 +1,6 @@
 package io.patterns.state;
 
-public class TCPEstablished extends TCPState {
+public class TCPEstablished implements TCPState {
 
 	
 
@@ -12,7 +12,7 @@ public class TCPEstablished extends TCPState {
 
 	@Override
 	public TCPState open() {
-		throw  new UnsupportedOperationException();
+		throw  new IllegalStateException("The connection is already opened");
 	}
 
 }
